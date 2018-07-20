@@ -5,10 +5,22 @@ import java.util.List;
 import java.util.Objects;
 
 public class Coord {
+	/**
+	 * Number of rows
+	 */
 	public final int rows;
+	/**
+	 * Number of columns
+	 */
 	public final int cols;
 
+	/**
+	 * Actual row (zero based)
+	 */
 	public final int row;
+	/**
+	 * Actual column (zero based)
+	 */
 	public final int col;
 
 	/**
@@ -30,6 +42,14 @@ public class Coord {
 		this.neighbours = neighbours;
 	}
 
+	/**
+	 * Create a coordinate based on the number of rows, number of columns and
+	 * the linear coordinate
+	 * @param rows
+	 * @param cols
+	 * @param linearCoord
+	 * @return
+	 */
 	public static Coord createCoord(int rows, int cols, int linearCoord) {
 		int row = linearCoord / cols;
 		int col = linearCoord - row * cols;
@@ -37,14 +57,38 @@ public class Coord {
 		return new Coord(rows, cols, row, col, linearCoord, getNeighbours(rows, cols, row, col));
 	}
 
+	/**
+	 * Converts (row,col) coordinate to linear coordinate
+	 * @param cols
+	 * @param row
+	 * @param col
+	 * @return
+	 */
 	public static int convertRowColToSerial(int cols, int row, int col) {
 		return row * cols + col;
 	}
 
+	/**
+	 * (row, col) is valid if it is between zero and (rows-1, cols-1)
+	 * @param rows
+	 * @param cols
+	 * @param row
+	 * @param col
+	 * @return
+	 */
 	public static boolean validCoord(int rows, int cols, int row, int col) {
 		return row >= 0 && row < rows && col >= 0 && col < cols;
 	}
 
+	/**
+	 * creates a list of valid neighbourhood linear coordinates of a given (row, col)
+	 * coordinate
+	 * @param rows
+	 * @param cols
+	 * @param row
+	 * @param col
+	 * @return
+	 */
 	public static List<Integer> getNeighbours(int rows, int cols, int row, int col) {
 		List<Integer>  neighbours = new ArrayList<>();
 
