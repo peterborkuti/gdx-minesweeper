@@ -1,9 +1,8 @@
 package hu.bp.minesweeper;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -23,13 +22,13 @@ public class GdxMinesweeper extends ApplicationAdapter {
 		table = new Table();
 		table.setFillParent(true);
 
-		ButtonDrawer bd = new ButtonDrawer();
-		MinesweeperData mData = Minesweeper.createMinesweeperData(10, 10, 20);
+		MinesweeperData mData = Minesweeper.createMinesweeperData(5, 5, 3);
+
+		ButtonDrawer bd = new ButtonDrawer(mData.bombs.size(), mData.BOUND);
+
 		bd.addButtons(Minesweeper.getIntegerGrid(mData), table);
 
 		stage.addActor(table);
-
-		table.setDebug(true);
 	}
 
 	@Override
