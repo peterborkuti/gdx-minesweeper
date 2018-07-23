@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import hu.bp.minesweeper.core.Minesweeper;
 import hu.bp.minesweeper.core.MinesweeperData;
@@ -16,13 +17,13 @@ public class GdxMinesweeper extends ApplicationAdapter {
 
 	@Override
 	public void create () {
-		stage = new Stage(new ScreenViewport());
+		stage = new Stage(new FitViewport(1, 1));
 		Gdx.input.setInputProcessor(stage);
 
 		table = new Table();
 		table.setFillParent(true);
 
-		MinesweeperData mData = Minesweeper.createMinesweeperData(5, 5, 3);
+		MinesweeperData mData = Minesweeper.createMinesweeperData(4, 4, 3);
 
 		ButtonDrawer bd = new ButtonDrawer(mData.bombs.size(), mData.BOUND);
 
@@ -33,7 +34,7 @@ public class GdxMinesweeper extends ApplicationAdapter {
 
 	@Override
 	public void resize (int width, int height) {
-		// See below for what true means.
+		stage.getViewport().setWorldSize((int)table.getMinWidth(), (int)table.getMinHeight());
 		stage.getViewport().update(width, height, true);
 	}
 
