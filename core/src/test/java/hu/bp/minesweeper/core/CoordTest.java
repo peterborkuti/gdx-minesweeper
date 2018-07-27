@@ -26,15 +26,6 @@ public class CoordTest {
 		assertEquals(5, Coord.convertRowColToSerial(3, 1, 2));
 	}
 
-	@Test
-	public void validCoord() {
-		assertTrue(Coord.validCoord(3, 4, 1, 2));
-		assertFalse(Coord.validCoord(3, 4, 4, 2));
-		assertFalse(Coord.validCoord(3, 4, 2, 4));
-		assertFalse(Coord.validCoord(3, 4, -1, 2));
-		assertFalse(Coord.validCoord(3, 4, 2, -1));
-	}
-
 	private Integer[] stringToIntArray(String s) {
 		return Arrays.stream(s.split(",")).map(String::trim).mapToInt(Integer::new).boxed().toArray(Integer[]::new);
 	}

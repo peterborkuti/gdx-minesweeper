@@ -18,15 +18,17 @@ public class Minesweeper {
 	 * integer cell value for a bomb
 	 */
 	public static final int INT_BOMB = -1;
+
 	/**
 	 * String representation of the bomb
 	 */
 	public static final String STR_BOMB = "*";
+
 	/**
 	 * When there is no bombs in the neighbourhood this will
 	 * be the cell's string representation
 	 */
-	public static final String STR_ZEO = " ";
+	public static final String STR_ZEO = "_";
 
 	/**
 	 * Don't instantiate this class, use the create* factory methods
@@ -144,7 +146,7 @@ public class Minesweeper {
 		IntStream.range(0, data.BOUND).forEach(i ->
 			{
 				Coord c = Coord.createCoord(data.ROWS, data.COLS, i);
-				grid[c.row][c.col] = linearGrid[i];
+				grid[c.row][c.col] = linearGrid[i] == null ? 0 : linearGrid[i];
 			}
 		);
 

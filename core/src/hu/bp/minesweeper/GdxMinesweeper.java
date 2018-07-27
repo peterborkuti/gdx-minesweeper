@@ -23,7 +23,7 @@ public class GdxMinesweeper extends ApplicationAdapter {
 		table = new Table();
 		table.setFillParent(true);
 
-		MinesweeperData mData = Minesweeper.createMinesweeperData(4, 4, 3);
+		MinesweeperData mData = Minesweeper.createMinesweeperData(16, 16, 40);
 
 		ButtonDrawer bd = new ButtonDrawer(mData.bombs.size(), mData.BOUND);
 

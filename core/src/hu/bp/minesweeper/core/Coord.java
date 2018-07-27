@@ -1,16 +1,22 @@
 package hu.bp.minesweeper.core;
 
+import javafx.util.Pair;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Coord {
 	/**
-	 * Number of rows
+	 * Number of rows of the grid
 	 */
 	public final int rows;
+
 	/**
-	 * Number of columns
+	 * Number of columns of the grid
 	 */
 	public final int cols;
 
@@ -29,9 +35,20 @@ public class Coord {
 	public final int linearCoord;
 
 	/**
-	 * Neighbours with linear coordinates
+	 * Neighbours with linear coordinates. The index is the linear coordinate, the value is the number of
+	 * bombs in the neighbourhood
 	 */
 	public final List<Integer> neighbours;
+
+	/**
+	 * Coordinates of a 3x3 matrix without the center cell relative to the center cell
+	 */
+	private final static List<Pair<Integer, Integer>> relativeCoordinatesOfNeighbourhood = Arrays.asList(
+			new Pair[]{
+				new Pair(-1, -1), new Pair(-1, 0), new Pair(-1, 1),
+				new Pair(0, -1),                   new Pair(0, 1),
+				new Pair(1, -1),  new Pair(1, 0),  new Pair(1, 1),
+			});
 
 	private Coord(int rows, int cols, int row, int col, int linearCoord, List<Integer> neighbours) {
 		this.rows = rows;
@@ -40,6 +57,7 @@ public class Coord {
 		this.col = col;
 		this.linearCoord = linearCoord;
 		this.neighbours = neighbours;
+
 	}
 
 	/**
@@ -69,18 +87,6 @@ public class Coord {
 	}
 
 	/**
-	 * (row, col) is valid if it is between zero and (rows-1, cols-1)
-	 * @param rows
-	 * @param cols
-	 * @param row
-	 * @param col
-	 * @return
-	 */
-	public static boolean validCoord(int rows, int cols, int row, int col) {
-		return row >= 0 && row < rows && col >= 0 && col < cols;
-	}
-
-	/**
 	 * creates a list of valid neighbourhood linear coordinates of a given (row, col)
 	 * coordinate
 	 * @param rows
@@ -90,18 +96,21 @@ public class Coord {
 	 * @return
 	 */
 	public static List<Integer> getNeighbours(int rows, int cols, int row, int col) {
-		List<Integer>  neighbours = new ArrayList<>();
-
-		for (int r = row - 1; r <= row + 1; r++) {
-			for (int c = col - 1; c <= col + 1; c++) {
-				if (validCoord(rows, cols, r, c) && !(row == r && col == c)) {
-					neighbours.add(convertRowColToSerial(cols, r, c));
-				}
-			}
-		}
-
-		return neighbours;
+		return relativeCoordinatesOfNeighbourhood.stream().
+				map(pair -> new Pair<Integer, Integer>(row + pair.getKey(), col + pair.getValue())).
+				filter(pair -> Coord.valid(rows, cols, pair)).
+				map(pair -> convertRowColToSerial(cols, pair.getKey(), pair.getValue())).
+				collect(Collectors.toList());
 	}
+
+	/**
+	 * (row, col) is valid if it is between zero and (rows-1, cols-1)
+	 * @return
+	 */
+	public static boolean valid(int rows, int cols, Pair<Integer, Integer> coord) {
+		return coord.getKey() >= 0 && coord.getKey() < rows && coord.getValue() >= 0 && coord.getValue() < cols;
+	}
+
 
 	@Override
 	public boolean equals(Object o) {

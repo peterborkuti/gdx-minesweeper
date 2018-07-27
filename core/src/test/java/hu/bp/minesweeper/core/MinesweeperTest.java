@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertArrayEquals;
@@ -38,13 +39,14 @@ public class MinesweeperTest {
 
 	@Test
 	public void testMinesweeper() throws IOException {
-		MinesweeperTestHelper helper = new MinesweeperTestHelper("neighbours.txt");
+		String fileName = "neighbours.txt";
+		MinesweeperTestHelper helper = new MinesweeperTestHelper(fileName);
 
 		helper.forEach(test -> {
 			MinesweeperData data = Minesweeper.createMinesweeperData(test.ROWS, test.COLS, test.bombs);
 
-			assertArrayEquals("Coords:" + test.description, test.getBombsNeighboursLinearCoords(), data.getBombsNeighboursLinearCoords());
-			assertArrayEquals("Counts:" + test.description, test.getBombsNeighboursCounts(), data.getBombsNeighboursCounts());
+			assertArrayEquals("in file:" + fileName + " " + test.description, test.getBombsNeighboursLinearCoords(), data.getBombsNeighboursLinearCoords());
+			assertArrayEquals("in file:" + fileName + " " + test.description, test.getBombsNeighboursCounts(), data.getBombsNeighboursCounts());
 		});
 	}
 
@@ -66,8 +68,22 @@ public class MinesweeperTest {
 	}
 
 	@Test
+	public void getIntegerGridAllRowsEqualLength() {
+		MinesweeperData data = Minesweeper.createMinesweeperData(20, 15, 5);
+
+		Integer[][] grid = Minesweeper.getIntegerGrid(data);
+
+		long numberOfGivenLengthRows = Arrays.stream(grid).
+				map(row -> Arrays.stream(row).map(Minesweeper::cellToStringMapper).collect(Collectors.joining(""))).
+				filter(row -> row.length() == 15).
+				count();
+
+		assertEquals(20, numberOfGivenLengthRows);
+	}
+
+	@Test
 	public void getStringGrid() {
 		MinesweeperData data = MinesweeperTestHelper.getMinesweeperDataFromString(2, 2, "*12 ");
-		assertEquals("*1\n2 ", Minesweeper.getStringGrid(data));
+		assertEquals("*1\n2" + Minesweeper.STR_ZEO, Minesweeper.getStringGrid(data));
 	}
 }

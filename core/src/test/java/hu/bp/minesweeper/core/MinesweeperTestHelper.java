@@ -22,15 +22,22 @@ public class MinesweeperTestHelper implements Iterable<MinesweeperData> {
 		String line = bfr.readLine();
 		int rows = 0;
 		int cols = 0;
+		int lineNumber = 0;
 
 		while (line != null) {
+			if (line.startsWith(";")) {
+				line = bfr.readLine();
+				continue;
+			}
+
+			lineNumber++;
 
 			if (line.length() != 0) {
 				sb.append(line);
 				cols = Math.max(cols, line.length());
 				rows++;
 			} else {
-				processTest(rows, cols, sb.toString());
+				processTest(rows, cols, sb.toString(), lineNumber);
 
 				sb = new StringBuilder();
 				rows = 0;
@@ -41,20 +48,25 @@ public class MinesweeperTestHelper implements Iterable<MinesweeperData> {
 		}
 
 		if (sb.toString().length() != 0) {
-			processTest(rows, cols, sb.toString());
+			processTest(rows, cols, sb.toString(), lineNumber);
 		}
 	}
 
-	private void processTest(int rows, int cols, String test) {
-		testData.add(getMinesweeperDataFromString(rows, cols, test));
+	private void processTest(int rows, int cols, String test, int lineNumber) {
+		testData.add(getMinesweeperDataFromString(rows, cols, test, lineNumber));
 	}
 
-	public static MinesweeperData getMinesweeperDataFromString(int rows, int cols, String s) {
+	public static MinesweeperData getMinesweeperDataFromString(int rows, int cols, String s, int... lineNumber) {
 		List<Integer> bombs = getBombsFromString(s);
 
 		Map<Integer, Long> neighboursExpected = getNeighboursFromString(s);
 
-		return new MinesweeperData(rows, cols, bombs, neighboursExpected, s);
+		String description = s;
+		if (lineNumber.length > 0) {
+			description = "Line:" + lineNumber[0] + "," + s;
+		}
+
+		return new MinesweeperData(rows, cols, bombs, neighboursExpected, description);
 	}
 
 	//TODO: should use indexOf for less step
