@@ -65,7 +65,11 @@ com_crashlytics_export_strings.xml
 /android/build/
 /core/build/
 /desktop/build/
-/html/build/
+#/html/build/
+/html/build/classes/
+/html/build/generated/
+/html/build/gwt/
+/html/build/tmp/
 /ios/build/
 /ios-moe/build/
 
@@ -77,7 +81,7 @@ com_crashlytics_export_strings.xml
 /ios/nbbuild/
 /ios-moe/nbbuild/
 
-/dist/
+#/dist/
 /android/dist/
 /core/dist/
 /desktop/dist/
@@ -105,7 +109,7 @@ gradle-app.setting
 /android/build/
 /core/build/
 /desktop/build/
-/html/build/
+#/html/build/
 /ios/build/
 /ios-moe/build/
 
