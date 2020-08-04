@@ -10,3 +10,6 @@ I appreciate any thoughts, pull requests, remarks.
 
 I did not take care of the UI, it is just for
 proving that it works.
+
+
+See: https://peterborkuti.github.io/gdx-minesweeper/
