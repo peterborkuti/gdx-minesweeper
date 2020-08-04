@@ -1,13 +1,9 @@
 package hu.bp.minesweeper.core;
 
-import javafx.util.Pair;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Coord {
 	/**
@@ -43,7 +39,7 @@ public class Coord {
 	/**
 	 * Coordinates of a 3x3 matrix without the center cell relative to the center cell
 	 */
-	private final static List<Pair<Integer, Integer>> relativeCoordinatesOfNeighbourhood = Arrays.asList(
+	private final static List<Pair> relativeCoordinatesOfNeighbourhood = Arrays.asList(
 			new Pair[]{
 				new Pair(-1, -1), new Pair(-1, 0), new Pair(-1, 1),
 				new Pair(0, -1),                   new Pair(0, 1),
@@ -97,9 +93,9 @@ public class Coord {
 	 */
 	public static List<Integer> getNeighbours(int rows, int cols, int row, int col) {
 		return relativeCoordinatesOfNeighbourhood.stream().
-				map(pair -> new Pair<Integer, Integer>(row + pair.getKey(), col + pair.getValue())).
+				map(pair -> new Pair(row + pair.key, col + pair.value)).
 				filter(pair -> Coord.valid(rows, cols, pair)).
-				map(pair -> convertRowColToSerial(cols, pair.getKey(), pair.getValue())).
+				map(pair -> convertRowColToSerial(cols, pair.key, pair.value)).
 				collect(Collectors.toList());
 	}
 
@@ -107,8 +103,8 @@ public class Coord {
 	 * (row, col) is valid if it is between zero and (rows-1, cols-1)
 	 * @return
 	 */
-	public static boolean valid(int rows, int cols, Pair<Integer, Integer> coord) {
-		return coord.getKey() >= 0 && coord.getKey() < rows && coord.getValue() >= 0 && coord.getValue() < cols;
+	public static boolean valid(int rows, int cols, Pair coord) {
+		return coord.key >= 0 && coord.value < rows && coord.value >= 0 && coord.value < cols;
 	}
 
 
